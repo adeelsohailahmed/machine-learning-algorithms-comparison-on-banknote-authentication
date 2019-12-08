@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov  6 18:20:17 2019
+Created on Sun Dec  8 14:38:35 2019
 
-@author: Adeel Ahmed
+@author: CORE COMPUTER
 """
-
 import numpy as np
 import pandas as pd
+import time
 
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import classification_report, accuracy_score
 
 # Create a dataframe of the dataset from its CSV file
@@ -45,21 +45,23 @@ target_train = target[:-N]
 data_test = data[-N:]
 target_test = target[-N:]
 
-print("\nBinary Classification Using K-Nearest Neighbours Algorithm")
-print("============================================================")
+print("\nBinary Classification Using Decision Tree Classifier Algorithm")
+print("==============================================================\n")
 
-# Run the K-Nearest Neighbour Model with different values of K and generate report
-for K in [3, 5, 7]:
-        
-    knn = KNeighborsClassifier(n_neighbors = K)    
-    knn.fit(data_train, target_train)
-    
-    target_predicted = knn.predict(data_test)
-    
-    print('\nFor  K =', K)
-    print('----------')
-    
-    print(classification_report(target_test, target_predicted,
-                                target_names=['Genuine Banknotes (0)', 'Forged Banknotes (1)']))
-    
-    print('\nAccuracy Score:', accuracy_score(target_test, target_predicted))
+# Start measuring the time
+time_start = time.perf_counter()
+
+decision_tree = DecisionTreeClassifier()
+decision_tree.fit(data_train, target_train)
+
+target_predicted = decision_tree.predict(data_test)
+
+# After the classes have been predicted, stop measuring the time and note the difference
+time_end = time.perf_counter() - time_start
+
+print(classification_report(target_test, target_predicted,
+                            target_names=['Genuine Banknotes (0)', 'Forged Banknotes (1)']))
+
+print('\nAccuracy Score:', accuracy_score(target_test, target_predicted))
+
+print('\n Completed in %0.4f seconds' %time_end)
