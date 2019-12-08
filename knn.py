@@ -7,6 +7,7 @@ Created on Wed Nov  6 18:20:17 2019
 
 import numpy as np
 import pandas as pd
+import time
 
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.metrics import classification_report, accuracy_score
@@ -50,11 +51,17 @@ print("============================================================")
 
 # Run the K-Nearest Neighbour Model with different values of K and generate report
 for K in [3, 5, 7]:
-        
+   
+    # Start measuring the time
+    time_start = time.perf_counter()
+    
     knn = KNeighborsClassifier(n_neighbors = K)    
     knn.fit(data_train, target_train)
     
     target_predicted = knn.predict(data_test)
+    
+    # After the classes have been predicted, stop measuring the time and note the difference
+    time_end = time.perf_counter() - time_start
     
     print('\nFor  K =', K)
     print('----------')
