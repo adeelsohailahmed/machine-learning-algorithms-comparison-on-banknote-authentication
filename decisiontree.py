@@ -2,7 +2,7 @@
 """
 Created on Sun Dec  8 14:38:35 2019
 
-@author: CORE COMPUTER
+@author: Adeel Ahmed
 """
 import numpy as np
 import pandas as pd
