@@ -1,1 +1,1 @@
-"# banknote-authentication-machine-learning-algorithms" 
+# Banknote Authentication Machine Learning Algorithms
