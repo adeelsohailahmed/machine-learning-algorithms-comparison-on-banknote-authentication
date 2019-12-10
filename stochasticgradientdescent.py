@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Nov  6 18:20:17 2019
+Created on Tue Dec 10 20:44:56 2019
 
 @author: Adeel Ahmed
 """
@@ -9,7 +9,7 @@ import numpy as np
 import pandas as pd
 import time
 
-from sklearn.neighbors import KNeighborsClassifier
+from sklearn.linear_model import SGDClassifier
 from sklearn.metrics import classification_report, accuracy_score
 
 # Create a dataframe of the dataset from its CSV file
@@ -37,7 +37,7 @@ target = permuted_dataset[:, 4] # Last column contains the class of images
 target = np.array(target, int)
 
 # N is number of rows used to test the model after the training
-N = 200    
+N = 200   
 
 # Separate training data and testing data along with their respective targets
 data_train = data[:-N]
@@ -46,28 +46,24 @@ target_train = target[:-N]
 data_test = data[-N:]
 target_test = target[-N:]
 
-print("\nBinary Classification Using K-Nearest Neighbours Algorithm")
-print("============================================================")
+print("\nBinary Classification Using Stochastic Gradient Descent Algorithm")
+print("=================================================================\n")
 
-# Run the K-Nearest Neighbour Model with different values of K and generate report
-for K in [3, 5, 7]:
-   
-    # Start measuring the time
-    time_start = time.perf_counter()
-    
-    knn = KNeighborsClassifier(n_neighbors = K)    
-    knn.fit(data_train, target_train)
-    
-    target_predicted = knn.predict(data_test)
-    
-    # After the classes have been predicted, stop measuring the time and note the difference
-    time_end = time.perf_counter() - time_start
-    
-    print('\nFor  K =', K)
-    print('----------')
-    
-    print(classification_report(target_test, target_predicted,
-                                target_names=['Genuine Banknotes (0)', 'Forged Banknotes (1)']))
-    
-    print('\nAccuracy Score:', accuracy_score(target_test, target_predicted))
-    print('\n Completed in %0.4f seconds' %time_end)
+# Start measuring the time
+time_start = time.perf_counter()
+
+sgd = SGDClassifier()
+sgd.fit(data_train, target_train)
+
+target_predicted = sgd.predict(data_test)
+
+# After the classes have been predicted, stop measuring the time and note the difference
+time_end = time.perf_counter() - time_start
+
+print(classification_report(target_test, target_predicted,
+                            target_names=['Genuine Banknotes (0)', 'Forged Banknotes (1)']))
+
+print('\nAccuracy Score:', accuracy_score(target_test, target_predicted))
+
+print('\n Completed in %0.4f seconds' %time_end)
+
